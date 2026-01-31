@@ -56,7 +56,7 @@ namespace ConsoleApp1
       
         static void Main(string[] args)
         {
-            Assessment2 x = new Assessment2();
+            Assessment3 x = new Assessment3();
         }
     }
 }
