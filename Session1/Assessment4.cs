@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace ConsoleApp1
+namespace ConsoleApp1.Session1
 {
     public class Assessment4
     {

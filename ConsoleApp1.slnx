@@ -1,6 +1,4 @@
 <Solution>
-  <Folder Name="/Solution Items/">
-    <File Path="Assessment1.cs" />
-  </Folder>
+  <Folder Name="/Solution Items/" />
   <Project Path="ConsoleApp1.csproj" />
 </Solution>
