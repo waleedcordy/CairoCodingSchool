@@ -7,7 +7,10 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Session2.Assessment2 x = new Session2.Assessment2();
+            Session3.Assessment3 x = new Session3.Assessment3();
+
+            bool result = x.IsValid("[[[]");
+
         }
     }
 }
