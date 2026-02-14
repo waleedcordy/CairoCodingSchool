@@ -42,6 +42,16 @@ namespace ConsoleApp1.Session4
         //Displays all previous transactions for the logged-in account.
         //Includes date, transaction type, amount, and resulting balance
 
+        //=========================================================================================
+        //|         Date        |           Type           |       Amount    |       Balance      |
+        //=========================================================================================
+        //|2/14/2026 12:50:21 PM|Deposit                   |500              |500                 |
+        //|2/14/2026 12:50:22 PM|Withdraw                  |400              |100                 |
+        //|2/14/2026 12:50:43 PM|Withdraw                  |50               |50                  |
+        //|2/14/2026 12:51:31 PM|Withdraw                  |2.44             |47.56               |
+        //|==================================================================|====================|
+        //|                                                                  |47.56               |
+        //|=======================================================================================|
 
         public List<Account> Accounts = new List<Account>();
         Account LoggedInAccount = null;
@@ -182,7 +192,7 @@ namespace ConsoleApp1.Session4
                     {
                         LoggedInAccount.Balance = LoggedInAccount.Balance + amount;
                         Console.WriteLine($"{amount} is deposited into account , current Balance is {LoggedInAccount.Balance}");
-                        LoggedInAccount.Transactions.Add(new Transaction() { DateTime = DateTime.Now, Type = TransactionType.Deposit, Amount = amount });
+                        LoggedInAccount.Transactions.Add(new Transaction() { DateTime = DateTime.Now, Type = TransactionType.Deposit, Amount = amount, Balance = LoggedInAccount.Balance });
                         ShowAccountOperations();
                     }
                 }
@@ -208,7 +218,7 @@ namespace ConsoleApp1.Session4
                         {
                             LoggedInAccount.Balance = LoggedInAccount.Balance - amount;
                             Console.WriteLine($"{amount} withdrawed from account , current Balance is {LoggedInAccount.Balance}");
-                            LoggedInAccount.Transactions.Add(new Transaction() { DateTime = DateTime.Now, Type = TransactionType.Withdraw, Amount = amount });
+                            LoggedInAccount.Transactions.Add(new Transaction() { DateTime = DateTime.Now, Type = TransactionType.Withdraw, Amount = amount, Balance = LoggedInAccount.Balance });
                             ShowAccountOperations();
                         }
                         else
@@ -226,12 +236,16 @@ namespace ConsoleApp1.Session4
             const int datetimeLength = 21;
             const int typeLength = 26;
             const int amountLength = 17;
-            Console.WriteLine("====================================================================");
-            Console.WriteLine("|         Date        |           Type           |       Amount    |");
-            Console.WriteLine("====================================================================");
+            const int balanceLength = 20;
+            Console.WriteLine("=========================================================================================");
+            Console.WriteLine("|         Date        |           Type           |       Amount    |       Balance      |");
+            Console.WriteLine("=========================================================================================");
             foreach (var trans in LoggedInAccount.Transactions.OrderBy(x => x.DateTime).ToList())
-                Console.WriteLine($"|{trans.DateTime,-datetimeLength}|{trans.Type.ToString(),-typeLength}|{trans.Amount,-amountLength}|");
-            Console.WriteLine("====================================================================");
+                Console.WriteLine($"|{trans.DateTime,-datetimeLength}|{trans.Type.ToString(),-typeLength}|{trans.Amount,-amountLength}|{trans.Balance,-balanceLength}|");
+            //Console.WriteLine("=========================================================================================");
+            Console.WriteLine("|==================================================================|====================|");
+            Console.WriteLine($"|                                                                  |{LoggedInAccount.Balance,-balanceLength}|");
+            Console.WriteLine("|=======================================================================================|");
 
             ShowAccountOperations();
         }
@@ -344,6 +358,7 @@ namespace ConsoleApp1.Session4
             public DateTime DateTime;
             public TransactionType Type;
             public double Amount;
+            public double Balance;
         }
 
         public enum TransactionType
