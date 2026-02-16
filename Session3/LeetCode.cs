@@ -11,7 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleApp1.Session3
 {
-    public class Assessment3
+    public class LeetCode
     {
         //https://leetcode.com/problems/valid-parentheses/submissions/1913978141
 

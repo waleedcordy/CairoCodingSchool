@@ -8,7 +8,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Session4.Assessment3 x = new Session4.Assessment3();
+            Session4.LeetCode x = new Session4.LeetCode();
         }
     }
 }
