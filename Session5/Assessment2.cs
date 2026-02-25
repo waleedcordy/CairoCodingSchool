@@ -21,7 +21,7 @@ namespace ConsoleApp1.Session5
 
             Console.WriteLine(cookies["username"]);
             Console.WriteLine(cookies["id"]);
-            Console.WriteLine(cookies["role"]);
+            Console.WriteLine(cookies["role111"]);
         }
     }
 
@@ -32,7 +32,10 @@ namespace ConsoleApp1.Session5
         {
             get
             {
-                return cookies[name];
+                if (cookies.TryGetValue(name, out string value))
+                    return value;
+                else
+                    return string.Empty;
             }
             set
             {
