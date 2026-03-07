@@ -10,7 +10,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-              Session8.Assessment1 program = new Session8.Assessment1();
+              Session8.Assessment2 program = new Session8.Assessment2();
 
 
 

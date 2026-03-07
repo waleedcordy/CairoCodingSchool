@@ -61,11 +61,11 @@ namespace ConsoleApp1.Session8
             ShowMainMenu(Order, Products);
         }
 
-        void ShowMainMenu(Order Order, List<Product> Products)
+        void ShowMainMenu(Order order, List<Product> products)
         {
             Console.WriteLine("Invoice Generation & Export System");
             Console.WriteLine(Environment.NewLine);
-            if (Order.Details.Count == 0)
+            if (order.Details.Count == 0)
                 Console.WriteLine("1. Create Order");
             else
                 Console.WriteLine("1. Edit Order");
@@ -73,10 +73,10 @@ namespace ConsoleApp1.Session8
             Console.WriteLine("2. Export Invoice");
             Console.WriteLine("3. Exit");
 
-            AskForMainMenuOperation(Order, Products);
+            AskForMainMenuOperation(order, products);
         }
 
-        void AskForMainMenuOperation(Order Order, List<Product> Products)
+        void AskForMainMenuOperation(Order order, List<Product> products)
         {
             while (true)
             {
@@ -87,10 +87,10 @@ namespace ConsoleApp1.Session8
                     switch (operation)
                     {
                         case (int)MainMenuOperations.CreateOrder:
-                            AskForOrderOperation(Order, Products);
+                            AskForOrderOperation(order, products);
                             break;
                         case (int)MainMenuOperations.ExportInvoice:
-                            AskForExportOperation(Order, Products);
+                            AskForExportOperation(order, products);
                             break;
                         case (int)MainMenuOperations.Exit:
                             Environment.Exit(0);
@@ -107,7 +107,7 @@ namespace ConsoleApp1.Session8
             }
         }
 
-        void AskForOrderOperation(Order Order, List<Product> Products)
+        void AskForOrderOperation(Order order, List<Product> products)
         {
             while (true)
             {
@@ -120,10 +120,10 @@ namespace ConsoleApp1.Session8
                     switch (operation)
                     {
                         case (int)OrderOperations.AddProduct:
-                            AskForProductId(Order, Products);
+                            AskForProductId(order, products);
                             break;
                         case (int)OrderOperations.Exit:
-                            ShowMainMenu(Order, Products);
+                            ShowMainMenu(order, products);
                             break;
                         default:
                             Console.WriteLine("Invalid choice. Please try again.");
@@ -143,22 +143,22 @@ namespace ConsoleApp1.Session8
             Exit = 2
         }
 
-        void AskForProductId(Order Order, List<Product> Products)
+        void AskForProductId(Order order, List<Product> products)
         {
             while (true)
             {
-                for (int i = 0; i < Products.Count; i++)
+                for (int i = 0; i < products.Count; i++)
                 {
-                    Console.WriteLine($"{Products[i].Id}. {Products[i].Name} - {Products[i].Price}$");
+                    Console.WriteLine($"{products[i].Id}. {products[i].Name} - {products[i].Price}$");
                 }
                 Console.Write("Please enter the product id:");
                 var line = Console.ReadLine();
                 if (int.TryParse(line, out int productId))
                 {
-                    var product = Products.FirstOrDefault(x => x.Id == productId);
+                    var product = products.FirstOrDefault(x => x.Id == productId);
                     if (product != null)
                     {
-                        AskForProductQty(Order, product);
+                        AskForProductQty(order, product);
                         return;
                     }
                     else
@@ -173,15 +173,15 @@ namespace ConsoleApp1.Session8
             }
         }
 
-        void AskForProductQty(Order Order, Product product)
+        void AskForProductQty(Order order, Product products)
         {
             while (true)
             {
                 Console.Write("Please enter the product quantity:");
                 var line = Console.ReadLine();
-                if (double.TryParse(line, out double qty))
+                if (double.TryParse(line, out double qty) && qty >0)
                 {
-                    Order.AddOrderDetail(new OrderDetail(product, qty));
+                    order.AddOrderDetail(new OrderDetail(products, qty));
                     return;
                 }
                 else
@@ -191,13 +191,13 @@ namespace ConsoleApp1.Session8
             }
         }
 
-        void AskForExportOperation(Order Order, List<Product> Products)
+        void AskForExportOperation(Order order, List<Product> prodcuts)
         {
-            if (Order.Details.Count > 0)
+            if (order.Details.Count > 0)
             {
                 while (true)
                 {
-                    ExportInvoice exportInvoice;
+                    ExportInvoice exportInvoice = null;
 
                     Console.WriteLine("1. PDF");
                     Console.WriteLine("2. Excel");
@@ -209,40 +209,30 @@ namespace ConsoleApp1.Session8
                     var line = Console.ReadLine();
                     if (int.TryParse(line, out int result))
                     {
-                        switch (result)
+                        switch ((ExportOperations)result)
                         {
-                            case (int)ExportOperations.PDF:
-                                exportInvoice = new PDFExportInvoice(Order);
-                                exportInvoice.Process();
+                            case ExportOperations.PDF:
+                                exportInvoice = new PDFExportInvoice(order);
                                 break;
-                        }
-                        switch (result)
-                        {
-                            case (int)ExportOperations.Excel:
-                                exportInvoice = new ExcelExportInvoice(Order);
-                                exportInvoice.Process();
+                       
+                            case ExportOperations.Excel:
+                                exportInvoice = new ExcelExportInvoice(order);
                                 break;
-                        }
-                        switch (result)
-                        {
-                            case (int)ExportOperations.JSON:
-                                exportInvoice = new JSONExportInvoice(Order);
-                                exportInvoice.Process();
+                       
+                            case ExportOperations.JSON:
+                                exportInvoice = new JSONExportInvoice(order);
                                 break;
-                        }
-                        switch (result)
-                        {
-                            case (int)ExportOperations.Console:
-                                exportInvoice = new ConsoleExportInvoice(Order);
-                                exportInvoice.Process();
+                       
+                            case ExportOperations.Console:
+                                exportInvoice = new ConsoleExportInvoice(order);
                                 break;
+                       
+                            case ExportOperations.Exit:
+                                ShowMainMenu(order, prodcuts);
+                                return;
                         }
-                        switch (result)
-                        {
-                            case (int)ExportOperations.Exit:
-                                ShowMainMenu(Order, Products);
-                                break;
-                        }
+
+                        exportInvoice?.Process();
                     }
                 }
             }
@@ -269,11 +259,11 @@ namespace ConsoleApp1.Session8
             Console = 4,
             Exit = 5
         }
-        public void InitializeProducts(List<Product> Products)
+        public void InitializeProducts(List<Product> products)
         {
-            Products.Add(new Product(1, "Keyboard", 10));
-            Products.Add(new Product(2, "Mouse", 20));
-            Products.Add(new Product(3, "Iphone", 100));
+            products.Add(new Product(1, "Keyboard", 10));
+            products.Add(new Product(2, "Mouse", 20));
+            products.Add(new Product(3, "Iphone", 100));
         }
     }
 
@@ -307,7 +297,6 @@ namespace ConsoleApp1.Session8
         {
             return Item.Price * Qty;
         }
-
     }
     public class Product
     {
