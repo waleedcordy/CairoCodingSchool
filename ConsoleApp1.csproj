@@ -7,8 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="Session12\LeetCode_Customers_Who_Never_Order.sql" />
-  </ItemGroup>
-
 </Project>

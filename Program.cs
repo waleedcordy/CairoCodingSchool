@@ -10,10 +10,8 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-              Session8.Assessment2 program = new Session8.Assessment2();
-
-
-
+            Project3.EventManagementSystem.Initialize();
+            Project3.EventManagementSystem.ShowMainMenu();
         }
     }
 }
